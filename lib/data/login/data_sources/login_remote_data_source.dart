@@ -7,16 +7,24 @@ class LoginRemoteDataSource {
   LoginRemoteDataSource(this.auth);
 
   Future<void> signIn(user_entity.User user) async {
-    await auth.signInWithEmailAndPassword(
-      email: user.email,
-      password: user.password,
-    );
+    try {
+      await auth.signInWithEmailAndPassword(
+        email: user.email,
+        password: user.password,
+      );
+    } catch (exception) {
+      throw Exception(exception);
+    }
   }
 
   Future<void> signUp(user_entity.User user) async {
-    await auth.createUserWithEmailAndPassword(
-      email: user.email,
-      password: user.password,
-    );
+    try {
+      await auth.createUserWithEmailAndPassword(
+        email: user.email,
+        password: user.password,
+      );
+    } catch (exception) {
+      throw Exception(exception);
+    }
   }
 }

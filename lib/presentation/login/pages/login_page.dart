@@ -3,6 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:to_do_app/presentation/login/providers/login_provider.dart';
 import 'package:to_do_app/presentation/login/widgets/button.dart';
 import 'package:to_do_app/presentation/login/widgets/input_text_field.dart';
+import 'package:to_do_app/presentation/utils/progress_dialog.dart';
+import 'package:to_do_app/presentation/utils/simple_snack_bar.dart';
+import '../providers/login_state.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -13,6 +16,9 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final loginProvider = context.watch<LoginProvider>();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _manageState(loginProvider, context);
+    });
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
@@ -98,5 +104,33 @@ class LoginPage extends StatelessWidget {
 
   void _signUp(LoginProvider loginProvider, String email, String password) {
     loginProvider.signUp(email, password);
+  }
+
+  void _manageState(LoginProvider loginProvider, BuildContext context) {
+    switch (loginProvider.state) {
+      case LoginState.initial:
+        break;
+      case LoginState.loading:
+        ProgressDialog.show(context);
+        loginProvider.resetState();
+        break;
+      case LoginState.success:
+        Navigator.of(context).pop();
+        SimpleSnackBar.show(
+          context,
+          message: 'Usuario autenticado',
+        );
+        break;
+      case LoginState.error:
+        Navigator.of(context).pop();
+        SimpleSnackBar.show(
+          context,
+          message: 'Ha ocurrido un error intentando autenticarse',
+        );
+        loginProvider.resetState();
+        break;
+      default:
+        break;
+    }
   }
 }
