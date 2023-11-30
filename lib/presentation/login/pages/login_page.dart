@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:to_do_app/presentation/login/providers/login_provider.dart';
+import 'package:to_do_app/presentation/login/widgets/button.dart';
+import 'package:to_do_app/presentation/login/widgets/input_text_field.dart';
+
+import '../../../domain/login/entities/user.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final loginProvider = context.watch<LoginProvider>();
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
@@ -32,36 +39,41 @@ class LoginPage extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      'Iniciar Sesión',
+                      'Ingresar',
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
                         vertical: 16,
                         horizontal: 40,
                       ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          TextField(
-                            decoration: InputDecoration(labelText: 'Correo'),
+                          const InputTextField(
+                            labelText: 'Correo',
+                            hintText: 'Ingrese su correo',
+                            icon: Icons.email,
+                            keyboardType: TextInputType.emailAddress,
                           ),
-                          TextField(
-                            decoration:
-                                InputDecoration(labelText: 'Contraseña'),
-                          )
+                          const InputTextField(
+                            labelText: 'Contraseña',
+                            hintText: 'Ingrese su contraseña',
+                            icon: Icons.password,
+                            obscureText: true,
+                          ),
+                          Button(
+                            text: 'Iniciar sesión',
+                            onPressed: () => _login(
+                              loginProvider,
+                              User(
+                                email: 'demanzanoc07@gmail.com',
+                                password: '1234567890',
+                              ),
+                            ),
+                          ),
+                          Button(text: 'Registrarse', onPressed: () {}),
                         ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Procesando...')),
-                          );
-                        },
-                        child: const Text('Ingresar'),
                       ),
                     ),
                   ],
@@ -72,5 +84,9 @@ class LoginPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _login(LoginProvider loginProvider, User user) {
+    loginProvider.signInUseCase.call(user);
   }
 }
