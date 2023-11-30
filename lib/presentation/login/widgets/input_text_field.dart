@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 class InputTextField extends StatelessWidget {
-  final String labelText;
   final String hintText;
+  final TextEditingController controller;
   final IconData icon;
   final TextInputType keyboardType;
   final bool obscureText;
 
   const InputTextField({
     super.key,
-    required this.labelText,
     required this.hintText,
+    required this.controller,
     this.icon = Icons.edit,
     this.keyboardType = TextInputType.text,
     this.obscureText = false,
@@ -18,7 +18,6 @@ class InputTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController controller = TextEditingController();
     return Container(
       margin: const EdgeInsets.only(top: 16.0),
       width: MediaQuery.of(context).size.width,
@@ -34,10 +33,7 @@ class InputTextField extends StatelessWidget {
           prefixIcon: Icon(icon, color: Colors.grey),
           //labelText: labelText,
           hintText: hintText,
-          hintStyle: const TextStyle(
-              color: Colors.grey,
-              fontSize: 17,
-          ),
+          hintStyle: const TextStyle(color: Colors.grey, fontSize: 17),
           border: InputBorder.none,
         ),
       ),

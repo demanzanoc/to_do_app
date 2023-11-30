@@ -12,4 +12,11 @@ class LoginRemoteDataSource {
       password: user.password,
     );
   }
+
+  Future<void> signUp(user_entity.User user) async {
+    await auth.createUserWithEmailAndPassword(
+      email: user.email,
+      password: user.password,
+    );
+  }
 }

@@ -4,10 +4,11 @@ import 'package:to_do_app/presentation/login/providers/login_provider.dart';
 import 'package:to_do_app/presentation/login/widgets/button.dart';
 import 'package:to_do_app/presentation/login/widgets/input_text_field.dart';
 
-import '../../../domain/login/entities/user.dart';
-
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+  LoginPage({super.key});
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -50,29 +51,34 @@ class LoginPage extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          const InputTextField(
-                            labelText: 'Correo',
-                            hintText: 'Ingrese su correo',
+                          InputTextField(
+                            hintText: 'Correo',
+                            controller: emailController,
                             icon: Icons.email,
                             keyboardType: TextInputType.emailAddress,
                           ),
-                          const InputTextField(
-                            labelText: 'Contraseña',
-                            hintText: 'Ingrese su contraseña',
+                          InputTextField(
+                            hintText: 'Contraseña',
+                            controller: passwordController,
                             icon: Icons.password,
                             obscureText: true,
                           ),
                           Button(
                             text: 'Iniciar sesión',
-                            onPressed: () => _login(
+                            onPressed: () => _signIn(
                               loginProvider,
-                              User(
-                                email: 'demanzanoc07@gmail.com',
-                                password: '1234567890',
-                              ),
+                              emailController.text,
+                              passwordController.text,
                             ),
                           ),
-                          Button(text: 'Registrarse', onPressed: () {}),
+                          Button(
+                            text: 'Registrarse',
+                            onPressed: () => _signUp(
+                              loginProvider,
+                              emailController.text,
+                              passwordController.text,
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -86,7 +92,11 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  void _login(LoginProvider loginProvider, User user) {
-    loginProvider.signInUseCase.call(user);
+  void _signIn(LoginProvider loginProvider, String email, String password) {
+    loginProvider.signIn(email, password);
+  }
+
+  void _signUp(LoginProvider loginProvider, String email, String password) {
+    loginProvider.signUp(email, password);
   }
 }
