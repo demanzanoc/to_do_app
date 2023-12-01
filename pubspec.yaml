@@ -17,8 +17,9 @@ dependencies:
   get_it: ^7.6.4
 
   #Firebase
-  firebase_auth: ^4.15.0
   firebase_core: ^2.24.0
+  firebase_auth: ^4.15.0
+  cloud_firestore: ^4.2.0
 
   #State manager
   provider: ^6.1.1
