@@ -17,79 +17,92 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final LoginProvider loginProvider = context.watch<LoginProvider>();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _validateCurrentUser(loginProvider, context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _manageState(loginProvider, context);
     });
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                margin: const EdgeInsets.only(top: 100),
-                child: Column(
-                  children: <Widget>[
-                    const Icon(
-                      Icons.account_circle,
-                      size: 100,
-                      color: Colors.deepPurple,
+      body: FutureBuilder<String?>(
+        future: loginProvider.getCurrentUserId(),
+        builder: (context, snapshot) {
+          final userId = snapshot.data ?? '';
+          if (userId.isNotEmpty) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => const ToDoPage()),
+              );
+            });
+          }
+          return SingleChildScrollView(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    margin: const EdgeInsets.only(top: 100),
+                    child: Column(
+                      children: <Widget>[
+                        const Icon(
+                          Icons.account_circle,
+                          size: 100,
+                          color: Colors.deepPurple,
+                        ),
+                        Text(
+                          'To-Do Manager',
+                          style: Theme.of(context).textTheme.headlineLarge,
+                        ),
+                      ],
                     ),
-                    Text(
-                      'To-Do Manager',
-                      style: Theme.of(context).textTheme.headlineLarge,
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 100),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Ingresar',
+                          style: Theme.of(context).textTheme.headlineSmall,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 16,
+                            horizontal: 40,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              InputTextField(
+                                hintText: 'Correo',
+                                controller: emailController,
+                                icon: Icons.email,
+                                keyboardType: TextInputType.emailAddress,
+                              ),
+                              InputTextField(
+                                hintText: 'Contraseña',
+                                controller: passwordController,
+                                icon: Icons.password,
+                                obscureText: true,
+                              ),
+                              Button(
+                                  text: 'Iniciar sesión',
+                                  onPressed: () => loginProvider.signIn(
+                                      emailController.text,
+                                      passwordController.text)),
+                              Button(
+                                text: 'Registrarse',
+                                onPressed: () => loginProvider.signUp(
+                                    emailController.text,
+                                    passwordController.text),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              Container(
-                margin: const EdgeInsets.only(top: 100),
-                child: Column(
-                  children: [
-                    Text(
-                      'Ingresar',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 16,
-                        horizontal: 40,
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          InputTextField(
-                            hintText: 'Correo',
-                            controller: emailController,
-                            icon: Icons.email,
-                            keyboardType: TextInputType.emailAddress,
-                          ),
-                          InputTextField(
-                            hintText: 'Contraseña',
-                            controller: passwordController,
-                            icon: Icons.password,
-                            obscureText: true,
-                          ),
-                          Button(
-                              text: 'Iniciar sesión',
-                              onPressed: () => loginProvider.signIn(
-                                  emailController.text,
-                                  passwordController.text)),
-                          Button(
-                            text: 'Registrarse',
-                            onPressed: () => loginProvider.signUp(
-                                emailController.text, passwordController.text),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -133,12 +146,5 @@ class LoginPage extends StatelessWidget {
       context,
       message: errorLoginMessage,
     );
-  }
-
-  void _validateCurrentUser(LoginProvider loginProvider, BuildContext context) {
-    final userId = loginProvider.getCurrentUserId().toString();
-    if (userId.isNotEmpty) {
-      _goToToDoPage(context);
-    }
   }
 }

@@ -19,7 +19,7 @@ class ToDoFormAlertDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ToDoProvider toDoProvider = context.watch<ToDoProvider>();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _manageState(toDoProvider, context);
     });
     return AlertDialog(
@@ -95,17 +95,17 @@ class ToDoFormAlertDialog extends StatelessWidget {
         ProgressDialog.show(context);
         break;
       case RequestState.success:
-        _onToDoCreated(context);
+        _onToDoCreated(context, toDoProvider);
         break;
       case RequestState.error:
-        _onToDoCreateError(context);
+        _onToDoCreateError(context, toDoProvider);
         break;
       default:
         break;
     }
   }
 
-  void _onToDoCreated(BuildContext context) {
+  void _onToDoCreated(BuildContext context, ToDoProvider toDoProvider) {
     const String successLoginMessage = 'Tarea creada';
     Navigator.of(context).pop();
     Navigator.of(context).pop();
@@ -113,9 +113,10 @@ class ToDoFormAlertDialog extends StatelessWidget {
       context,
       message: successLoginMessage,
     );
+    toDoProvider.resetState();
   }
 
-  void _onToDoCreateError(BuildContext context) {
+  void _onToDoCreateError(BuildContext context, ToDoProvider toDoProvider) {
     const String errorLoginMessage =
         'Ha ocurrido un error intentando crear la tarea';
     Navigator.of(context).pop();
@@ -123,5 +124,6 @@ class ToDoFormAlertDialog extends StatelessWidget {
       context,
       message: errorLoginMessage,
     );
+    toDoProvider.resetState();
   }
 }

@@ -56,4 +56,9 @@ class ToDoProvider extends ChangeNotifier {
         date: date.toDateTime(),
       );
 
+  void resetState() {
+    _toDoState = RequestState.initial;
+    _formState = InputFormState.initial;
+  }
+
 }
