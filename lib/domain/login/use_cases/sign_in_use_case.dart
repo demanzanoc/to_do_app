@@ -6,7 +6,6 @@ class SignInUseCase {
 
   SignInUseCase({required this.repository});
 
-  Future<void> call(User user) {
-    return repository.signIn(user);
-  }
+  Future<void> call(User user) => repository.signIn(user);
+
 }

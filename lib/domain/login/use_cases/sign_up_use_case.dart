@@ -7,7 +7,6 @@ class SignUpUseCase {
 
   SignUpUseCase({required this.repository});
 
-  Future<void> call(User user) {
-    return repository.signUp(user);
-  }
+  Future<void> call(User user) => repository.signUp(user);
+
 }

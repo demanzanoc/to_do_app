@@ -13,4 +13,8 @@ class LoginRemoteRepository implements LoginRepository {
 
   @override
   Future<void> signUp(User user) async => remoteDataSource.signUp(user);
+
+  @override
+  Future<String> getCurrentUserId() async =>
+      remoteDataSource.getCurrentUserId();
 }

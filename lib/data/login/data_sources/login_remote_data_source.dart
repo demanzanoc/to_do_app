@@ -27,4 +27,12 @@ class LoginRemoteDataSource {
       throw Exception(exception);
     }
   }
+
+  Future<String> getCurrentUserId() async {
+    try {
+      return auth.currentUser?.uid ?? '';
+    } catch (exception) {
+      throw Exception(exception);
+    }
+  }
 }
