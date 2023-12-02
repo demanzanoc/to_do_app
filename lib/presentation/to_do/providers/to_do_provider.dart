@@ -52,10 +52,13 @@ class ToDoProvider extends ChangeNotifier {
         final toDoListResponse = getToDoListUseCase.call(userId);
         toDoListResponse.listen((toDos) {
           _toDoList = toDos;
+          notifyListeners();
         });
       }
     } catch (exception) {
       throw Exception(exception);
+    } finally {
+      resetState();
     }
   }
 
