@@ -115,17 +115,17 @@ class LoginPage extends StatelessWidget {
         ProgressDialog.show(context);
         break;
       case RequestState.success:
-        _goToToDoPage(context);
+        _goToToDoPage(context, loginProvider);
         break;
       case RequestState.error:
-        _showSimpleSnackBar(context);
+        _showSimpleSnackBar(context, loginProvider);
         break;
       default:
         break;
     }
   }
 
-  void _goToToDoPage(BuildContext context) {
+  void _goToToDoPage(BuildContext context, LoginProvider loginProvider) {
     const String successLoginMessage = 'Usuario autenticado';
     Navigator.of(context).pop();
     Navigator.push(
@@ -136,9 +136,10 @@ class LoginPage extends StatelessWidget {
       context,
       message: successLoginMessage,
     );
+    loginProvider.resetState();
   }
 
-  void _showSimpleSnackBar(BuildContext context) {
+  void _showSimpleSnackBar(BuildContext context, LoginProvider loginProvider) {
     const String errorLoginMessage =
         'Ha ocurrido un error intentando autenticarse';
     Navigator.of(context).pop();
@@ -146,5 +147,6 @@ class LoginPage extends StatelessWidget {
       context,
       message: errorLoginMessage,
     );
+    loginProvider.resetState();
   }
 }

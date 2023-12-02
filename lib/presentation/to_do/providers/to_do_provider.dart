@@ -13,7 +13,6 @@ class ToDoProvider extends ChangeNotifier {
   final GetToDoListUseCase getToDoListUseCase;
   InputFormState _formState = InputFormState.initial;
   RequestState _toDoSetState = RequestState.initial;
-  RequestState _toDoGetState = RequestState.initial;
   List<ToDo> _toDoList = [];
 
   ToDoProvider({
@@ -24,7 +23,7 @@ class ToDoProvider extends ChangeNotifier {
 
   InputFormState get formState => _formState;
   RequestState get toDoSetState => _toDoSetState;
-  RequestState get toDoGetState => _toDoGetState;
+  List<ToDo> get toDoList => _toDoList;
 
   Future<void> setToDo(String title, String description, String date) async {
     _validateFields(title, description, date);
@@ -47,21 +46,16 @@ class ToDoProvider extends ChangeNotifier {
   }
 
   Future<void> getToDoList() async {
-    _toDoGetState = RequestState.loading;
-    notifyListeners();
     try {
       final userId = await getCurrentUserIdUseCase.call();
       if (userId.isNotEmpty) {
         final toDoListResponse = getToDoListUseCase.call(userId);
         toDoListResponse.listen((toDos) {
-          _toDoGetState = RequestState.success;
-          _toDoList.addAll(toDos);
+          _toDoList = toDos;
         });
       }
     } catch (exception) {
-      _toDoGetState = RequestState.error;
-    } finally {
-      notifyListeners();
+      throw Exception(exception);
     }
   }
 
@@ -84,6 +78,7 @@ class ToDoProvider extends ChangeNotifier {
   void resetState() {
     _toDoSetState = RequestState.initial;
     _formState = InputFormState.initial;
+    notifyListeners();
   }
 
 }

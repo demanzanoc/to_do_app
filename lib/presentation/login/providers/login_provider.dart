@@ -55,4 +55,10 @@ class LoginProvider extends ChangeNotifier {
 
   User _createUser(String email, String password) =>
       User(email: email, password: password);
+
+  void resetState() {
+    _loginState = RequestState.initial;
+    notifyListeners();
+  }
+
 }

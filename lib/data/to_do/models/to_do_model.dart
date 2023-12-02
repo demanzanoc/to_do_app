@@ -10,7 +10,7 @@ class ToDoModel extends ToDo {
     super.status,
   });
 
-  Map<String, dynamic> toDocument() => {
+  Map<String, dynamic> toApiModel() => {
         'title': title,
         'description': description,
         'date': date,

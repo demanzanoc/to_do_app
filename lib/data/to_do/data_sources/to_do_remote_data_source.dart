@@ -16,7 +16,7 @@ class ToDoRemoteDataSource {
       title: toDo.title,
       description: toDo.description,
       date: toDo.date,
-    ).toDocument();
+    ).toApiModel();
     try {
       await userCollection
           .doc(userId)

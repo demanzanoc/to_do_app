@@ -23,13 +23,26 @@ class ToDoFormAlertDialog extends StatelessWidget {
       _manageState(toDoProvider, context);
     });
     return AlertDialog(
-      title: const Text('Crear tarea'),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text('Crear tarea'),
+          IconButton(
+            icon: const Icon(
+              Icons.close,
+              size: 30,
+              color: Colors.deepPurple,
+            ),
+            onPressed: () => Navigator.pop(context),
+          )
+        ],
+      ),
       content: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             SizedBox(
-              width: 150,
-              height: 150,
+              width: 100,
+              height: 100,
               child: Image.network(
                 'https://cdn-icons-png.flaticon.com/512/2387/2387635.png',
               ),
@@ -56,19 +69,11 @@ class ToDoFormAlertDialog extends StatelessWidget {
       actions: [
         Button(
           text: 'Guardar',
-          onPressed: () =>
-              toDoProvider.setToDo(
-                _titleController.text,
-                _descriptionController.text,
-                _dateController.text,
-              ),
-        ),
-        Button(
-            text: 'Cancelar',
-            onPressed: () {
-              Navigator.pop(context);
-              toDoProvider.getToDoList();
-            }
+          onPressed: () => toDoProvider.setToDo(
+            _titleController.text,
+            _descriptionController.text,
+            _dateController.text,
+          ),
         ),
       ],
     );
