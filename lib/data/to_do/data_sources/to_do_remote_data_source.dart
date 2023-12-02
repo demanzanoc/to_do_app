@@ -7,11 +7,11 @@ class ToDoRemoteDataSource {
 
   ToDoRemoteDataSource(this.database);
 
-  final String _idUserCollection = 'users';
-  final String _idToDoCollection = 'to_dos';
+  final String _refUserCollection = 'users';
+  final String _refToDoCollection = 'to_dos';
 
   Future<void> setToDo(String userId, ToDo toDo) async {
-    final userCollection = database.collection(_idUserCollection);
+    final userCollection = database.collection(_refUserCollection);
     final toDoModel = ToDoModel(
       title: toDo.title,
       description: toDo.description,
@@ -20,9 +20,23 @@ class ToDoRemoteDataSource {
     try {
       await userCollection
           .doc(userId)
-          .collection(_idToDoCollection)
+          .collection(_refToDoCollection)
           .doc()
           .set(toDoModel);
+    } catch (exception) {
+      throw Exception(exception);
+    }
+  }
+
+  Stream<List<ToDo>> getToDoList(String userId) {
+    try {
+      final toDoCollection = database
+          .collection(_refUserCollection)
+          .doc(userId)
+          .collection(_refToDoCollection);
+      return toDoCollection.snapshots().map((querySnapshot) => querySnapshot.docs
+          .map((e) => ToDoModel.fromApiModel(e.data()))
+          .toList());
     } catch (exception) {
       throw Exception(exception);
     }

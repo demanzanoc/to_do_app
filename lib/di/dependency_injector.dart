@@ -5,6 +5,7 @@ import 'package:to_do_app/data/to_do/data_sources/to_do_remote_data_source.dart'
 import 'package:to_do_app/data/to_do/repositories/to_do_remote_repository.dart';
 import 'package:to_do_app/domain/login/use_cases/get_current_user_id_use_case.dart';
 import 'package:to_do_app/domain/to_do/repositories/to_do_repository.dart';
+import 'package:to_do_app/domain/to_do/use_cases/get_to_do_list_use_case.dart';
 import 'package:to_do_app/domain/to_do/use_cases/set_to_do_use_case.dart';
 import 'package:to_do_app/presentation/to_do/providers/to_do_provider.dart';
 import '../data/login/data_sources/login_remote_data_source.dart';
@@ -29,6 +30,7 @@ Future<void> initInjection() async {
     () => ToDoProvider(
       setToDoUseCase: di.call(),
       getCurrentUserIdUseCase: di.call(),
+      getToDoListUseCase: di.call(),
     ),
   );
 
@@ -44,6 +46,9 @@ Future<void> initInjection() async {
   );
   di.registerLazySingleton<SetToDoUseCase>(
     () => SetToDoUseCase(repository: di.call()),
+  );
+  di.registerLazySingleton<GetToDoListUseCase>(
+    () => GetToDoListUseCase(repository: di.call()),
   );
 
   //Repositories

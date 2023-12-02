@@ -1,11 +1,10 @@
 import 'package:to_do_app/domain/to_do/entities/to_do.dart';
 import 'package:to_do_app/domain/to_do/repositories/to_do_repository.dart';
 
-class SetToDoUseCase {
+class GetToDoListUseCase {
   final ToDoRepository repository;
 
-  SetToDoUseCase({required this.repository});
+  GetToDoListUseCase({required this.repository});
 
-  Future<void> call(String userId, ToDo toDo) =>
-      repository.setToDo(userId, toDo);
+  Stream<List<ToDo>> call(String userId) => repository.getToDoList(userId);
 }

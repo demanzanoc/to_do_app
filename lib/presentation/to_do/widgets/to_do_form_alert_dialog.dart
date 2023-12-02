@@ -56,15 +56,19 @@ class ToDoFormAlertDialog extends StatelessWidget {
       actions: [
         Button(
           text: 'Guardar',
-          onPressed: () => toDoProvider.setToDo(
-            _titleController.text,
-            _descriptionController.text,
-            _dateController.text,
-          ),
+          onPressed: () =>
+              toDoProvider.setToDo(
+                _titleController.text,
+                _descriptionController.text,
+                _dateController.text,
+              ),
         ),
         Button(
-          text: 'Cancelar',
-          onPressed: () => Navigator.pop(context),
+            text: 'Cancelar',
+            onPressed: () {
+              Navigator.pop(context);
+              toDoProvider.getToDoList();
+            }
         ),
       ],
     );
@@ -88,7 +92,7 @@ class ToDoFormAlertDialog extends StatelessWidget {
     if (toDoProvider.formState == InputFormState.incomplete) {
       SimpleSnackBar.show(context, message: 'Complete todos los campos');
     }
-    switch (toDoProvider.toDoState) {
+    switch (toDoProvider.toDoSetState) {
       case RequestState.initial:
         break;
       case RequestState.loading:
