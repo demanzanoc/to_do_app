@@ -15,26 +15,30 @@ class ToDoCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  toDo.title,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    toDo.title,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                Text(toDo.description),
-                Text(
-                  '${toDo.date.day.toString().padLeft(2, '0')}'
-                    '-${toDo.date.month.toString().padLeft(2, '0')}'
-                    '-${toDo.date.year}',
-                    style: const TextStyle(color: Colors.deepPurple)
-                ),
-              ],
+                  Text(toDo.description),
+                  Text(
+                      '${toDo.date.day.toString().padLeft(2, '0')}'
+                          '-${toDo.date.month.toString().padLeft(2, '0')}'
+                          '-${toDo.date.year}',
+                      style: const TextStyle(color: Colors.deepPurple)),
+                ],
+              ),
             ),
-            _createIcon(toDo.status)
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: _createIcon(toDo.status),
+            )
           ],
         ),
       ),
