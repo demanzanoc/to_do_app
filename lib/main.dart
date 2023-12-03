@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:to_do_app/presentation/login/providers/login_provider.dart';
 import 'package:to_do_app/presentation/to_do/providers/to_do_provider.dart';
-import 'data/firebase_options.dart';
+import 'data/config/firebase_options.dart';
 import 'presentation/login/pages/login_page.dart';
 import 'package:to_do_app/di/dependency_injector.dart' as dependency_injector;
 

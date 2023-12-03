@@ -35,7 +35,7 @@ class ToDoRemoteDataSource {
           .doc(userId)
           .collection(_refToDoCollection);
       return toDoCollection.snapshots().map((querySnapshot) => querySnapshot.docs
-          .map((e) => ToDoModel.fromApiModel(e.data()))
+          .map((e) => ToDoModel.fromApiModel(e.id, e.data()))
           .toList());
     } catch (exception) {
       throw Exception(exception);

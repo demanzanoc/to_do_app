@@ -14,6 +14,7 @@ class ToDoProvider extends ChangeNotifier {
   final GetToDoListUseCase getToDoListUseCase;
   InputFormState _formState = InputFormState.initial;
   RequestState _toDoSetState = RequestState.initial;
+  bool _enabledTranslation = false;
   List<ToDo> _toDoList = [];
 
   ToDoProvider({
@@ -23,10 +24,9 @@ class ToDoProvider extends ChangeNotifier {
   });
 
   InputFormState get formState => _formState;
-
   RequestState get toDoSetState => _toDoSetState;
-
   List<ToDo> get toDoList => _toDoList;
+  bool get enabledTranslation => _enabledTranslation;
 
   Future<void> setToDo(String title, String description, String date) async {
     _validateFields(title, description, date);
@@ -63,6 +63,11 @@ class ToDoProvider extends ChangeNotifier {
     } finally {
       resetState();
     }
+  }
+
+  void toggleTranslation() {
+    _enabledTranslation = !_enabledTranslation;
+    notifyListeners();
   }
 
   void _validateFields(String title, String description, String date) {

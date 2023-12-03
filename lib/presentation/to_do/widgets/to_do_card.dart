@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:to_do_app/domain/to_do/entities/to_do.dart';
 import 'package:to_do_app/domain/to_do/entities/to_do_status.dart';
+import 'package:to_do_app/presentation/to_do/providers/to_do_provider.dart';
 
 class ToDoCard extends StatelessWidget {
   final ToDo toDo;
@@ -9,7 +11,9 @@ class ToDoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final toDoProvider = context.watch<ToDoProvider>();
     return Card(
+      elevation: 4,
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(
@@ -20,24 +24,45 @@ class ToDoCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    toDo.title,
+                    toDoProvider.enabledTranslation
+                        ? toDo.toDoTranslated?.title ?? toDo.title
+                        : toDo.title,
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text(toDo.description),
                   Text(
-                      '${toDo.date.day.toString().padLeft(2, '0')}'
-                          '-${toDo.date.month.toString().padLeft(2, '0')}'
-                          '-${toDo.date.year}',
-                      style: const TextStyle(color: Colors.deepPurple)),
+                    toDoProvider.enabledTranslation
+                        ? toDo.toDoTranslated?.description ?? toDo.description
+                        : toDo.description,
+                  ),
+                  Text(
+                    '${toDo.date.day.toString().padLeft(2, '0')}'
+                    '-${toDo.date.month.toString().padLeft(2, '0')}'
+                    '-${toDo.date.year}',
+                    style: const TextStyle(color: Colors.deepPurple),
+                  ),
                 ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(10),
-              child: _createIcon(toDo.status),
+              padding: const EdgeInsets.all(8),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: _createIcon(toDo.status),
+                  ),
+                  InkWell(
+                    onTap: () => toDoProvider.toggleTranslation(),
+                    child: const Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Icon(Icons.g_translate, color: Colors.blue),
+                    ),
+                  ),
+                ],
+              ),
             )
           ],
         ),
