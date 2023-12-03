@@ -80,6 +80,7 @@ class ToDoFormAlertDialog extends StatelessWidget {
   }
 
   Future<void> _onDatePickerPressed(BuildContext context) async {
+    FocusScope.of(context).unfocus();
     final DateTime? datePicked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),

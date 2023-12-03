@@ -25,15 +25,18 @@ class InputTextField extends StatelessWidget {
         color: Colors.black12,
         borderRadius: BorderRadius.all(Radius.circular(50)),
       ),
-      child: TextField(
-        controller: controller,
-        keyboardType: keyboardType,
-        obscureText: obscureText,
-        decoration: InputDecoration(
-          prefixIcon: Icon(icon, color: Colors.grey),
-          hintText: hintText,
-          hintStyle: const TextStyle(color: Colors.grey, fontSize: 17),
-          border: InputBorder.none,
+      child: Padding(
+        padding: const EdgeInsets.only(right: 16),
+        child: TextField(
+          controller: controller,
+          keyboardType: keyboardType,
+          obscureText: obscureText,
+          decoration: InputDecoration(
+            prefixIcon: Icon(icon, color: Colors.grey),
+            hintText: hintText,
+            hintStyle: const TextStyle(color: Colors.grey, fontSize: 17),
+            border: InputBorder.none,
+          ),
         ),
       ),
     );
