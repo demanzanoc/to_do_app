@@ -25,7 +25,7 @@ class ToDoModel extends ToDo {
       title: toDo['title'],
       description: toDo['description'],
       date: date,
-      status: ToDoStatusExtension.fromString(toDo['status']),
+      status: toDo['status'].toString().toToDoStatus(),
     );
   }
 }

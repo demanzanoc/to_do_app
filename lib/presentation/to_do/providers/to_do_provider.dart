@@ -4,6 +4,7 @@ import 'package:to_do_app/domain/to_do/use_cases/get_to_do_list_use_case.dart';
 import 'package:to_do_app/domain/utils/string_to_datetime_extension.dart';
 import 'package:to_do_app/presentation/shared/providers/request_state.dart';
 import 'package:to_do_app/presentation/to_do/providers/input_form_state.dart';
+import '../../../domain/to_do/entities/to_do_status.dart';
 import '../../../domain/to_do/use_cases/set_to_do_use_case.dart';
 import '../../../domain/login/use_cases/get_current_user_id_use_case.dart';
 
@@ -22,7 +23,9 @@ class ToDoProvider extends ChangeNotifier {
   });
 
   InputFormState get formState => _formState;
+
   RequestState get toDoSetState => _toDoSetState;
+
   List<ToDo> get toDoList => _toDoList;
 
   Future<void> setToDo(String title, String description, String date) async {
@@ -51,7 +54,7 @@ class ToDoProvider extends ChangeNotifier {
       if (userId.isNotEmpty) {
         final toDoListResponse = getToDoListUseCase.call(userId);
         toDoListResponse.listen((toDos) {
-          _toDoList = toDos;
+          _toDoList = _orderToDoList(toDos);
           notifyListeners();
         });
       }
@@ -84,4 +87,18 @@ class ToDoProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  List<ToDo> _orderToDoList(List<ToDo> toDos) {
+    final List<ToDo> toDoListToOrder = List.from(toDos);
+    final List<ToDoStatus> toDoStatuses = List.from(ToDoStatus.values.reversed);
+    toDoListToOrder.sort((a, b) {
+      int dateCompare = a.date.compareTo(b.date);
+      if (dateCompare != 0) {
+        return dateCompare;
+      }
+      return toDoStatuses
+          .indexOf(a.status)
+          .compareTo(toDoStatuses.indexOf(b.status));
+    });
+    return toDoListToOrder;
+  }
 }
