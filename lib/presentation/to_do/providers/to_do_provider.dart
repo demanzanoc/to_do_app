@@ -105,11 +105,10 @@ class ToDoProvider extends ChangeNotifier {
   void _validateFields(String title, String description, String date) {
     if (title.isNotEmpty && description.isNotEmpty && date.isNotEmpty) {
       _formState = InputFormState.completed;
-      notifyListeners();
     } else {
       _formState = InputFormState.incomplete;
-      notifyListeners();
     }
+    notifyListeners();
   }
 
   ToDo _createToDoEntity(String title, String description, String date) => ToDo(

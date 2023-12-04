@@ -7,6 +7,7 @@ import 'package:to_do_app/presentation/to_do/pages/to_do_page.dart';
 import 'package:to_do_app/presentation/utils/progress_dialog.dart';
 import 'package:to_do_app/presentation/utils/simple_snack_bar.dart';
 import '../../shared/providers/request_state.dart';
+import '../../to_do/providers/input_form_state.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -82,15 +83,18 @@ class LoginPage extends StatelessWidget {
                                 obscureText: true,
                               ),
                               Button(
-                                  text: 'Iniciar sesión',
-                                  onPressed: () => loginProvider.signIn(
-                                      emailController.text,
-                                      passwordController.text)),
+                                text: 'Iniciar sesión',
+                                onPressed: () => loginProvider.signIn(
+                                  emailController.text,
+                                  passwordController.text,
+                                ),
+                              ),
                               Button(
                                 text: 'Registrarse',
                                 onPressed: () => loginProvider.signUp(
-                                    emailController.text,
-                                    passwordController.text),
+                                  emailController.text,
+                                  passwordController.text,
+                                ),
                               ),
                             ],
                           ),
@@ -108,7 +112,14 @@ class LoginPage extends StatelessWidget {
   }
 
   void _manageState(LoginProvider loginProvider, BuildContext context) {
-    switch (loginProvider.state) {
+    if (loginProvider.formState == InputFormState.incomplete) {
+      SimpleSnackBar.show(
+        context,
+        message:
+            'Complete los campos de correo y contraseña. La contraseña debe tener 6 o más caracteres',
+      );
+    }
+    switch (loginProvider.loginState) {
       case RequestState.initial:
         break;
       case RequestState.loading:
