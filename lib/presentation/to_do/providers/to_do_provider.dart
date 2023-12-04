@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:to_do_app/domain/to_do/entities/to_do.dart';
+import 'package:to_do_app/domain/to_do/use_cases/change_to_do_status_use_case.dart';
 import 'package:to_do_app/domain/to_do/use_cases/get_to_do_list_use_case.dart';
 import 'package:to_do_app/domain/utils/string_to_datetime_extension.dart';
 import 'package:to_do_app/presentation/shared/providers/request_state.dart';
@@ -12,6 +13,8 @@ class ToDoProvider extends ChangeNotifier {
   final SetToDoUseCase setToDoUseCase;
   final GetCurrentUserIdUseCase getCurrentUserIdUseCase;
   final GetToDoListUseCase getToDoListUseCase;
+  final ChangeToDoStatusUseCase changeToDoStatusUseCase;
+
   InputFormState _formState = InputFormState.initial;
   RequestState _toDoSetState = RequestState.initial;
   final Map<int, bool> _translationStates = {};
@@ -21,6 +24,7 @@ class ToDoProvider extends ChangeNotifier {
     required this.setToDoUseCase,
     required this.getCurrentUserIdUseCase,
     required this.getToDoListUseCase,
+    required this.changeToDoStatusUseCase,
   });
 
   InputFormState get formState => _formState;
@@ -63,6 +67,17 @@ class ToDoProvider extends ChangeNotifier {
       throw Exception(exception);
     } finally {
       resetState();
+    }
+  }
+
+  Future<void> changeToDoStatus(String toDoId, ToDoStatus toDoStatus) async {
+    try {
+      final userId = await getCurrentUserIdUseCase.call();
+      if (userId.isNotEmpty) {
+        await changeToDoStatusUseCase.call(userId, toDoId, toDoStatus);
+      }
+    } catch (exception) {
+      throw Exception(exception);
     }
   }
 

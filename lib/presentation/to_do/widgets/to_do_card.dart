@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:to_do_app/domain/to_do/entities/to_do.dart';
 import 'package:to_do_app/domain/to_do/entities/to_do_status.dart';
 import 'package:to_do_app/presentation/to_do/providers/to_do_provider.dart';
+import 'package:to_do_app/presentation/to_do/widgets/to_do_status_changer_alert_dialog.dart';
 
 class ToDoCard extends StatelessWidget {
   final ToDo toDo;
@@ -53,7 +54,16 @@ class ToDoCard extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8),
-                    child: _createIcon(toDo.status),
+                    child: InkWell(
+                      onTap: () => showDialog(
+                        context: context,
+                        builder: (context) => ToDoStatusChangerAlertDialog(
+                          index: index,
+                          toDoId: toDo.toDoId ?? '',
+                        ),
+                      ),
+                      child: _createIcon(toDo.status),
+                    ),
                   ),
                   InkWell(
                     onTap: () => toDoProvider.toggleTranslation(index),
@@ -64,7 +74,7 @@ class ToDoCard extends StatelessWidget {
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

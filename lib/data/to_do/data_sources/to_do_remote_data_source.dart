@@ -34,11 +34,30 @@ class ToDoRemoteDataSource {
           .collection(_refUserCollection)
           .doc(userId)
           .collection(_refToDoCollection);
-      return toDoCollection.snapshots().map((querySnapshot) => querySnapshot.docs
+      return toDoCollection.snapshots().map((querySnapshot) => querySnapshot
+          .docs
           .map((toDo) => ToDoModel.fromApiModel(toDo.id, toDo.data()))
           .toList());
     } catch (exception) {
       throw Exception(exception);
     }
+  }
+
+  Future<void> changeToDoStatus(
+    String userId,
+    String toDoId,
+    String toDoStatus,
+  ) async {
+    try {
+      final toDoRef = database
+          .collection(_refUserCollection)
+          .doc(userId)
+          .collection(_refToDoCollection)
+          .doc(toDoId);
+      await toDoRef.update({'status': toDoStatus});
+    } catch (exception) {
+      throw Exception(exception);
+    }
+
   }
 }
