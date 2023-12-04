@@ -62,7 +62,10 @@ class ToDoCard extends StatelessWidget {
                           toDoId: toDo.toDoId ?? '',
                         ),
                       ),
-                      child: _createIcon(toDo.status),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: _createIcon(toDo.status),
+                      ),
                     ),
                   ),
                   InkWell(
