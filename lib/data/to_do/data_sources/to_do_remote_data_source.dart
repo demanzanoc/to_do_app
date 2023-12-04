@@ -58,6 +58,18 @@ class ToDoRemoteDataSource {
     } catch (exception) {
       throw Exception(exception);
     }
+  }
 
+  Future<void> deleteToDo(String toDoId, String userId) async {
+    try {
+      final toDoRef = database
+          .collection(_refUserCollection)
+          .doc(userId)
+          .collection(_refToDoCollection)
+          .doc(toDoId);
+      toDoRef.delete();
+    } catch (exception) {
+      throw Exception(exception);
+    }
   }
 }

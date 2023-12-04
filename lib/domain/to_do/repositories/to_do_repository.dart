@@ -12,4 +12,6 @@ abstract class ToDoRepository {
     String toDoId,
     ToDoStatus toDoStatus,
   );
+
+  Future<void> deleteToDo(String toDoId, String userId);
 }

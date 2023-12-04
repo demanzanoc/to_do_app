@@ -6,6 +6,7 @@ import 'package:to_do_app/data/to_do/repositories/to_do_remote_repository.dart';
 import 'package:to_do_app/domain/login/use_cases/get_current_user_id_use_case.dart';
 import 'package:to_do_app/domain/to_do/repositories/to_do_repository.dart';
 import 'package:to_do_app/domain/to_do/use_cases/change_to_do_status_use_case.dart';
+import 'package:to_do_app/domain/to_do/use_cases/delete_to_do_use_case.dart';
 import 'package:to_do_app/domain/to_do/use_cases/get_to_do_list_use_case.dart';
 import 'package:to_do_app/domain/to_do/use_cases/set_to_do_use_case.dart';
 import 'package:to_do_app/presentation/to_do/providers/to_do_provider.dart';
@@ -33,6 +34,7 @@ Future<void> initInjection() async {
       getCurrentUserIdUseCase: di.call(),
       getToDoListUseCase: di.call(),
       changeToDoStatusUseCase: di.call(),
+      deleteToDoUseCase: di.call(),
     ),
   );
 
@@ -54,6 +56,9 @@ Future<void> initInjection() async {
   );
   di.registerLazySingleton<ChangeToDoStatusUseCase>(
     () => ChangeToDoStatusUseCase(repository: di.call()),
+  );
+  di.registerLazySingleton<DeleteToDoUseCase>(
+    () => DeleteToDoUseCase(repository: di.call()),
   );
 
   //Repositories

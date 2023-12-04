@@ -33,7 +33,7 @@ class ToDoPage extends StatelessWidget {
                 ),
                 const SizedBox(width: 10),
                 Text(
-                  '${currentTime.day.toString().padLeft(2, '0')}'
+                  'Día de hoy: ${currentTime.day.toString().padLeft(2, '0')}'
                   '-${currentTime.month.toString().padLeft(2, '0')}'
                   '-${currentTime.year}',
                   style: const TextStyle(

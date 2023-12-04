@@ -20,9 +20,14 @@ class ToDoRemoteRepository implements ToDoRepository {
     String userId,
     String toDoId,
     ToDoStatus toDoStatus,
-  ) => remoteDataSource.changeToDoStatus(
-      userId,
-      toDoId,
-      toDoStatus.toString().split('.')[1],
-  );
+  ) =>
+      remoteDataSource.changeToDoStatus(
+        userId,
+        toDoId,
+        toDoStatus.toString().split('.')[1],
+      );
+
+  @override
+  Future<void> deleteToDo(String toDoId, String userId) =>
+      remoteDataSource.deleteToDo(toDoId, userId);
 }

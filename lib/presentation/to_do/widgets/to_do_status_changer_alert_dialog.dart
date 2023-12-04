@@ -73,6 +73,19 @@ class ToDoStatusChangerAlertDialog extends StatelessWidget {
               toDoProvider.changeToDoStatus(toDoId, ToDoStatus.done);
             },
           ),
+          InkWell(
+            child: const Card(
+              elevation: 4,
+              child: Padding(
+                padding: EdgeInsets.all(12),
+                child: Icon(Icons.delete, color: Colors.redAccent),
+              ),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              toDoProvider.deleteToDo(toDoId);
+            },
+          ),
         ],
       ),
     );

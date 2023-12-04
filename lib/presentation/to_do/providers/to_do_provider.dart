@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:to_do_app/domain/to_do/entities/to_do.dart';
 import 'package:to_do_app/domain/to_do/use_cases/change_to_do_status_use_case.dart';
+import 'package:to_do_app/domain/to_do/use_cases/delete_to_do_use_case.dart';
 import 'package:to_do_app/domain/to_do/use_cases/get_to_do_list_use_case.dart';
 import 'package:to_do_app/domain/utils/string_to_datetime_extension.dart';
 import 'package:to_do_app/presentation/shared/providers/request_state.dart';
@@ -14,6 +15,7 @@ class ToDoProvider extends ChangeNotifier {
   final GetCurrentUserIdUseCase getCurrentUserIdUseCase;
   final GetToDoListUseCase getToDoListUseCase;
   final ChangeToDoStatusUseCase changeToDoStatusUseCase;
+  final DeleteToDoUseCase deleteToDoUseCase;
 
   InputFormState _formState = InputFormState.initial;
   RequestState _toDoSetState = RequestState.initial;
@@ -25,10 +27,13 @@ class ToDoProvider extends ChangeNotifier {
     required this.getCurrentUserIdUseCase,
     required this.getToDoListUseCase,
     required this.changeToDoStatusUseCase,
+    required this.deleteToDoUseCase,
   });
 
   InputFormState get formState => _formState;
+
   RequestState get toDoSetState => _toDoSetState;
+
   List<ToDo> get toDoList => _toDoList;
 
   bool getTranslationStates(int index) => _translationStates[index] ?? false;
@@ -75,6 +80,17 @@ class ToDoProvider extends ChangeNotifier {
       final userId = await getCurrentUserIdUseCase.call();
       if (userId.isNotEmpty) {
         await changeToDoStatusUseCase.call(userId, toDoId, toDoStatus);
+      }
+    } catch (exception) {
+      throw Exception(exception);
+    }
+  }
+
+  Future<void> deleteToDo(String toDoId) async {
+    try {
+      final userId = await getCurrentUserIdUseCase.call();
+      if (userId.isNotEmpty) {
+        await deleteToDoUseCase.call(toDoId, userId);
       }
     } catch (exception) {
       throw Exception(exception);
