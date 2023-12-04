@@ -6,8 +6,9 @@ import 'package:to_do_app/presentation/to_do/providers/to_do_provider.dart';
 
 class ToDoCard extends StatelessWidget {
   final ToDo toDo;
+  final int index;
 
-  const ToDoCard({super.key, required this.toDo});
+  const ToDoCard({super.key, required this.toDo, required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class ToDoCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    toDoProvider.enabledTranslation
+                    toDoProvider.getTranslationStates(index)
                         ? toDo.toDoTranslated?.title ?? toDo.title
                         : toDo.title,
                     style: const TextStyle(
@@ -33,7 +34,7 @@ class ToDoCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    toDoProvider.enabledTranslation
+                    toDoProvider.getTranslationStates(index)
                         ? toDo.toDoTranslated?.description ?? toDo.description
                         : toDo.description,
                   ),
@@ -55,7 +56,7 @@ class ToDoCard extends StatelessWidget {
                     child: _createIcon(toDo.status),
                   ),
                   InkWell(
-                    onTap: () => toDoProvider.toggleTranslation(),
+                    onTap: () => toDoProvider.toggleTranslation(index),
                     child: const Padding(
                       padding: EdgeInsets.all(10),
                       child: Icon(Icons.g_translate, color: Colors.blue),

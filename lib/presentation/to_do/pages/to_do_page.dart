@@ -51,7 +51,10 @@ class ToDoPage extends StatelessWidget {
                   return ListView.builder(
                     itemCount: toDoProvider.toDoList.length,
                     itemBuilder: (_, index) {
-                      return ToDoCard(toDo: toDoProvider.toDoList[index]);
+                      return ToDoCard(
+                        toDo: toDoProvider.toDoList[index],
+                        index: index,
+                      );
                     },
                   );
                 },
